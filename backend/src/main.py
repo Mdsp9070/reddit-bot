@@ -7,8 +7,8 @@ app = Flask(__name__)
 @app.route('/words')
 def index():
     body = request.get_json()
-    la = word_count(body['url'])
-    return {'hello': la}
+    word_count(body['url'], body['filter'], body['uppercase'])
+    return {'message': 'successfully counted words!'}
 
 
 @app.route('/files')
