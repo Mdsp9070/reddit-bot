@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app, resources={r'/api/*': {'origins': '*'}})
 
 
-@app.route('/api/words')
+@app.route('/api/words', methods=['POST'])
 def index():
     body = request.get_json()
     word_count(body['url'], body['filter'], body['uppercase'])
@@ -15,7 +15,7 @@ def index():
 
 @app.route('/api/files')
 def get_CSV():
-    return send_from_directory('..', 'words_count.csv', as_attachment=True)
+    return send_from_directory('../csv', 'words_count.csv', as_attachment=True)
 
 
 if __name__ == '__main__':

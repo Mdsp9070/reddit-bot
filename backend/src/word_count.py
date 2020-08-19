@@ -35,20 +35,19 @@ def count_words(comments: str, filter: list = [], uppercase: bool = False) -> li
 
     # if uppercase only was checked
     # return only words which is upper
-    uppercased = []
     if uppercase:
+        uppercased = []
         for word in comments.split():
             if word.isupper():
                 uppercased.append(word)
         return Counter(uppercased).most_common()
 
     # remove words from filter
-    comments = comments.lower()
-    for word in filter:
-        word = word.lower()
-        comments = comments.replace(word, '')
-
     comments = comments.upper()
+    if len(filter) > 0:
+        for word in filter:
+            word = word.upper()
+            comments = comments.replace(word, '')
 
     words = comments.split()
     return Counter(words).most_common()
@@ -56,7 +55,7 @@ def count_words(comments: str, filter: list = [], uppercase: bool = False) -> li
 
 # generate a CSV with two columns: the word and it's count
 def generate_CSV(words_count: list):
-    with open("words_count.csv", "w", newline='') as csvfile:
+    with open("backend/csv/words_count.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
 
         for word_count in words_count:
