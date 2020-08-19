@@ -1,0 +1,119 @@
+Summary
+This web app is intended to count the number of times a word appears in a Reddit thread. At a high level, the user will be able to navigate to the website (localhost acceptable), input a valid Reddit URL, select a few options, and generate a CSV file that contains a list of words and counts.
+
+Please use Reddit API to get words. App should work with any valid secret key.
+
+Acceptance Criteria
+
+AC #1 - Elements on Page
+
+Given a user has accessed the web page
+When on load
+Then the following elements are displayed:
+Input for URL
+Upload file for list of words to ignore
+Checkbox with label “Uppercase Only”
+Generate CSV button
+
+---
+
+AC #2 - Clicking Generate CSV Button
+
+Given a user has accessed the web page
+And has input a valid Reddit URL
+When clicking the Generate CSV button
+Then a CSV is downloaded
+
+---
+
+AC #3 - CSV Contents
+
+Given a user has downloaded the CSV
+When opening the CSV
+Then the CSV contains two columns
+Word
+Unique count for respective word
+And is populated by the words from the URL provided
+
+Example:
+AAPL	50
+TSLA	30
+SPY	10
+
+---
+
+AC #4 - Word Filter
+Scenario: User can upload a CSV file containing a dictionary of words which will filter out those words when generating a new file.
+
+Given a user has uploaded a file containing words
+When generating a CSV
+Then the CSV does not contain words within the file uploaded (exact match)
+
+
+---
+
+AC #5 - Uppercase Only
+Scenario: A user that checks the box for “Uppercase only” will not have words that are lowercase or mixed case populated in the generated CSV.
+
+Given a user has checked “Uppercase Only” checkbox
+When generating CSV
+Then the CSV only contains words that are in all uppercase
+
+Example:
+AAPL <- included
+aaPL <- not included
+Aapl <- not included
+
+---
+
+AC #6 - Trim Punctuation
+Scenario: Words with trailing punctuation, often those at the end of the sentence, will have the punctuation trimmed before being counted in the generated CSV
+
+Given generating CSV
+When a word ends with a non-alphanumeric character
+Then application will trim all the trailing non-alphanumeric characters before being included in the word count
+
+Example:
+AAPL. -> AAPL
+Aapl! -> Aapl
+AApl!!!??? -> AApl
+It’s -> It’s [no transformation was completed]
+
+---
+
+AC #6 - Trim Dollar Signs
+Scenario: Words that start with a $, denoting stock tickers, will have the dollar sign removed before being counted in the generated CSV
+
+Given generating CSV
+When a word starts with a $
+And the subsequent character is NOT a numeric character
+Then application will remove the $ before being included in the word count
+
+Example:
+$AAPL -> AAPL
+$nvda -> nvda
+$20.15 -> $20.15 [no transformation was completed]
+
+
+---
+
+
+AC #7 - Count of Words
+Scenario: The count generated for a word includes all cases of the word if “Uppercase Only” is not selected when generating a CSV.
+
+Given generating CSV
+And Uppercase Only was not selected
+When counting occurrences of the word
+Then the application will combine counts of all the cases (e.g. uppercase, lowercase mixed case, title case, etc.)
+
+Note: I am open to which version of the word appears in the CSV. Do what is easiest.
+
+---
+
+
+AC #8 - Sort by descending
+Scenario: Words in the CSV are sorted in descending order (most occurrences at the top)
+
+Given generating CSV
+When the CSV contains more than one word
+Then sort the CSV by descending order
