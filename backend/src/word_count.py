@@ -4,7 +4,7 @@ from config import reddit
 from collections import Counter
 
 # define punctuation constant to remove
-puncs = ':º-.,\n*;!?%$#(){}[]/\\\"'
+puncs = ':º-.,\n*;!?%$#(){}[]/\\\"\''
 
 # get all comments from reddit thread
 

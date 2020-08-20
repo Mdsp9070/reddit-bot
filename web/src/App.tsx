@@ -22,16 +22,14 @@ const App: React.FC = () => {
   const [uppercase, setUppercase] = useState(false);
   const [filter, setFilter] = useState<string[]>([]);
 
-  function handleParseFilter(data: Data) {
+  function handleParseFilter(data: Data): void {
     for (const column of data) {
       const word = column['data'][0];
-      console.log(word);
       if (word) setFilter([...filter, word]);
     }
-    console.log(filter);
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent): Promise<void> {
     e.preventDefault();
     try {
       const submitData: SubmitData = {
@@ -41,7 +39,7 @@ const App: React.FC = () => {
       };
 
       await api.post('words', submitData);
-      const res = await api.get('files', { responseType: 'blob' });
+      const res = await api.get('files');
       fileDownload(res.data, 'words_count.csv');
     } catch (err) {
       console.log(err);
