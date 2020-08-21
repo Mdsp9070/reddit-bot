@@ -16,6 +16,7 @@ def get_comments(url: str) -> list:
     while True:
         try:
             sub.comments.replace_more(limit=None)
+            sub.comments.replace_more(limit=None)
             break
         except RequestException:
             continue
@@ -64,8 +65,7 @@ def count_words(comments: str, filter: list = [], uppercase: bool = False) -> li
 def generate_CSV(words_count: list):
     folderpath = pathlib.Path(__file__).parent
     filepath = os.path.join(folderpath, '../csv/words_count.csv')
-
-    with open(filepath, "w", newline='') as csvfile:
+    with open(filepath, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
 
         for word_count in words_count:

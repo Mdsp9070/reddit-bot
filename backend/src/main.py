@@ -19,9 +19,7 @@ def index():
 @app.route('/api/files')
 def get_CSV():
     crypto = random.getrandbits(32)
-    folderpath = pathlib.Path(__file__).parent
-    path = os.path.join(folderpath, '../csv/words_count.csv')
-    res = make_response(send_file(path, as_attachment=True))
+    res = make_response(send_file('../csv/words_count.csv', as_attachment=True))
     res.headers['Cache-Control'] = 'no-cache'
     res.headers['Cache-Control'] = 'max-age=0'
     return res
@@ -29,4 +27,4 @@ def get_CSV():
 
 if __name__ == '__main__':
     port = 3333 or os.getenv("PORT")
-    app.run(debug=False, port=port)
+    app.run(debug=False, port=port, host='0.0.0.0')
