@@ -28,4 +28,5 @@ def get_CSV():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3333)
+    port = 3333 or os.getenv("PORT")
+    app.run(debug=False, port=port)

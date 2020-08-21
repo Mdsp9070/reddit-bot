@@ -1,19 +1,26 @@
 import csv
 import re
+import os
+import pathlib
 from config import reddit
 from collections import Counter
+from prawcore.exceptions import RequestException
 
 # define punctuation constant to remove
 puncs = ':º-.,\n*;!?%$#(){}[]/\\\"\''
 
 # get all comments from reddit thread
-
-
 def get_comments(url: str) -> list:
-    comments: list = []
     sub = reddit.submission(url=url)
-    sub.comments.replace_more(limit=None)
 
+    while True:
+        try:
+            sub.comments.replace_more(limit=None)
+            break
+        except RequestException:
+            continue
+
+    comments: list = []
     for comment in sub.comments.list():
         comments.append(comment.body)
 
@@ -55,7 +62,10 @@ def count_words(comments: str, filter: list = [], uppercase: bool = False) -> li
 
 # generate a CSV with two columns: the word and it's count
 def generate_CSV(words_count: list):
-    with open("backend/csv/words_count.csv", "w", newline='') as csvfile:
+    folderpath = pathlib.Path(__file__).parent
+    filepath = os.path.join(folderpath, '../csv/words_count.csv')
+
+    with open(filepath, "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
 
         for word_count in words_count:

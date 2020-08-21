@@ -22,11 +22,10 @@ const App: React.FC = () => {
   const [uppercase, setUppercase] = useState(false);
   const [filter, setFilter] = useState<string[]>([]);
 
+  // advide: nerver use setState inside loops
   function handleParseFilter(data: Data): void {
-    for (const column of data) {
-      const word = column['data'][0];
-      if (word) setFilter([...filter, word]);
-    }
+    const words = data.map((col) => col.data[0]).filter(Boolean);
+    setFilter((prevFilter) => prevFilter.concat(words));
   }
 
   async function handleSubmit(e: FormEvent): Promise<void> {
