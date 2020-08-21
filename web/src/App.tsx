@@ -20,6 +20,7 @@ interface SubmitData {
 const App: React.FC = () => {
   const [url, setUrl] = useState('');
   const [uppercase, setUppercase] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<string[]>([]);
 
   // advide: nerver use setState inside loops
@@ -37,7 +38,10 @@ const App: React.FC = () => {
         filter,
       };
 
+      setLoading(true);
       await api.post('words', submitData);
+      setLoading(false);
+
       const res = await api.get('files');
       fileDownload(res.data, 'words_count.csv');
     } catch (err) {
@@ -52,6 +56,7 @@ const App: React.FC = () => {
           <h1>Reddit Word Count Bot!</h1>
         </header>
         <main>
+          {loading ? <p>Loading</p> : null}
           <label>
             Reddit thread link
             <input
