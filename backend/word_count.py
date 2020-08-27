@@ -109,9 +109,9 @@ def count_words(comments: str, filter: list = [], uppercase: bool = False) -> li
     # remove words from filter
     comments = comments.upper()
     if len(filter) > 0:
-        for word in filter:
-            word = word.upper()
-            comments = comments.replace(word, '')
+        filter = ' '.join(filter).upper().split()
+        comments = [word for word in comments.split() if word not in filter]
+        return Counter(comments).most_common()
 
     words = comments.split()
     return Counter(words).most_common()
